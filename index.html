@@ -1,0 +1,770 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#0b67b2"><title>Municipal Corporation • Citizen Complaint Portal</title><style>
+:root{--primary:#0b67b2;--primary-dark:#084d86;--secondary:#18a56a;--accent:#f59e0b;--bg:#eef6fb;--card:#fff;--surface:#f7fbfe;--border:#d7e6f2;--text:#193247;--muted:#6b8194;--shadow:0 24px 60px rgba(36,82,116,.14);--danger:#d64545;--success:#15865c}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+html,body{min-height:100%}body{min-height:100vh;padding:28px 16px;color:var(--text);display:flex;align-items:center;justify-content:center;overflow:auto;background:linear-gradient(180deg,#eaf5fc 0%,#f7fbfe 42%,#edf7f2 100%);position:relative;isolation:isolate}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-2;opacity:.42;background-image:linear-gradient(rgba(11,103,178,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(11,103,178,.035) 1px,transparent 1px);background-size:38px 38px}
+.ambient{position:fixed;inset:0;overflow:hidden;z-index:-1;pointer-events:none}.orb{position:absolute;border-radius:50%;filter:blur(10px);opacity:.5}.orb.one{width:280px;height:280px;left:-110px;top:-90px;background:radial-gradient(circle,#bfe8ff 0%,rgba(191,232,255,0) 70%);animation:floatOne 12s ease-in-out infinite}.orb.two{width:310px;height:310px;right:-120px;top:20%;background:radial-gradient(circle,#dff6eb 0%,rgba(223,246,235,0) 70%);animation:floatTwo 14s ease-in-out infinite}.orb.three{width:240px;height:240px;left:28%;bottom:-130px;background:radial-gradient(circle,#fff0c8 0%,rgba(255,240,200,0) 70%);animation:floatThree 15s ease-in-out infinite}
+@keyframes floatOne{50%{transform:translate(60px,50px) scale(1.08)}}@keyframes floatTwo{50%{transform:translate(-55px,40px) scale(.94)}}@keyframes floatThree{50%{transform:translate(55px,-35px) scale(1.08)}}
+.portal-wrapper{width:min(94vw,900px);position:relative;animation:wrapperIn .8s cubic-bezier(.2,.75,.25,1) both}@keyframes wrapperIn{from{opacity:0;transform:translateY(25px) scale(.985)}to{opacity:1;transform:none}}
+.portal-shell{display:grid;grid-template-columns:.9fr 1.35fr;background:var(--card);border:1px solid rgba(255,255,255,.9);border-radius:28px;box-shadow:var(--shadow);overflow:hidden;position:relative}.portal-shell:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(110deg,rgba(255,255,255,.72),rgba(255,255,255,0) 44%,rgba(255,255,255,.45));opacity:.8}
+.info-panel{position:relative;padding:36px;background:linear-gradient(160deg,#0b67b2 0%,#0a77bf 55%,#15946a 140%);color:#fff;overflow:hidden}.info-panel:after{content:"";position:absolute;right:-70px;bottom:-90px;width:240px;height:240px;border:28px solid rgba(255,255,255,.10);border-radius:50%;animation:spin 18s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.gov-tag{display:inline-flex;align-items:center;gap:8px;padding:7px 11px;border-radius:999px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.24);font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;backdrop-filter:blur(6px)}.gov-dot{width:9px;height:9px;border-radius:50%;background:#ffe082;box-shadow:0 0 0 4px rgba(255,224,130,.12)}
+.info-panel h1{font-size:32px;line-height:1.12;letter-spacing:-.9px;margin:26px 0 12px;max-width:380px}.info-panel p{color:rgba(255,255,255,.84);font-size:13px;line-height:1.65;max-width:400px}.feature-list{display:grid;gap:13px;margin-top:28px}.feature{display:flex;gap:11px;align-items:flex-start}.feature-icon{width:31px;height:31px;flex:0 0 31px;border-radius:9px;display:grid;place-items:center;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.14);font-size:14px}.feature strong{display:block;font-size:12px;margin-bottom:2px}.feature span{font-size:11px;color:rgba(255,255,255,.74);line-height:1.45}.contact-note{position:absolute;left:36px;right:36px;bottom:28px;font-size:10px;color:rgba(255,255,255,.65);letter-spacing:.3px}
+.form-panel{padding:36px;background:rgba(255,255,255,.95);position:relative}.brand-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;color:var(--primary);font-size:11px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase}.brand-mark{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;color:#fff;font-size:16px;background:linear-gradient(135deg,var(--primary),#2da5e6);box-shadow:0 8px 18px rgba(11,103,178,.20);animation:markPulse 3s ease-in-out infinite}@keyframes markPulse{50%{transform:translateY(-2px);box-shadow:0 12px 24px rgba(11,103,178,.25)}}
+h2{margin:0;text-align:left;font-size:28px;letter-spacing:-.7px;color:var(--text);font-weight:800}.subtitle{color:var(--muted);font-size:13px;line-height:1.55;margin:7px 0 22px}.input-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}.input-group{margin-bottom:15px;position:relative;animation:fieldIn .5s both}.input-group.full{grid-column:1/-1}@keyframes fieldIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+.input-group label{display:block;margin:0 0 7px 2px;color:#486276;font-size:11px;font-weight:800;letter-spacing:.45px;text-transform:uppercase}.input-group input,.input-group select{width:100%;height:47px;padding:0 14px;border:1.5px solid var(--border);border-radius:11px;outline:none;color:var(--text);background:#fbfdff;font-size:13px;transition:border-color .22s,box-shadow .22s,transform .2s,background .22s}.input-group input:hover,.input-group select:hover{border-color:#b9d2e5}.input-group input::placeholder{color:#9aacba}.input-group input:focus,.input-group select:focus{border-color:#63a9d8;background:#fff;box-shadow:0 0 0 4px rgba(11,103,178,.08),0 8px 22px rgba(11,103,178,.08);transform:translateY(-1px)}.input-group select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,#6e8293 50%),linear-gradient(135deg,#6e8293 50%,transparent 50%);background-position:calc(100% - 18px) 19px,calc(100% - 12px) 19px;background-size:6px 6px,6px 6px;background-repeat:no-repeat;padding-right:38px}
+.password-wrapper{position:relative}.password-wrapper input{padding-right:50px}.toggle-password{position:absolute;right:13px;top:50%;transform:translateY(-50%);cursor:pointer;width:25px;height:19px;border:1.7px solid #91a6b5;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:.22s;z-index:2}.toggle-password:before{content:"";width:6px;height:6px;background:#91a6b5;border-radius:50%;transition:.22s}.toggle-password.visible{border-color:var(--primary);box-shadow:0 0 0 4px rgba(11,103,178,.07)}.toggle-password.visible:before{background:var(--primary)}
+.help-text{display:block;min-height:14px;margin:5px 2px 0;color:#8799a7;font-size:10px}.help-text.error{color:var(--danger)}.strength{height:4px;border-radius:999px;background:#e8eef3;overflow:hidden;margin-top:7px}.strength-bar{height:100%;width:0;background:linear-gradient(90deg,#e88787,#efb84d,#23a66d);transition:width .3s ease}.strength-text{font-size:10px;color:#8293a0;margin-top:4px;min-height:12px}
+.submit-btn{position:relative;overflow:hidden;width:100%;height:50px;margin-top:5px;border:0;border-radius:11px;color:#fff;font-size:14px;font-weight:800;letter-spacing:.2px;cursor:pointer;background:linear-gradient(135deg,var(--primary),#2d99d4 55%,var(--secondary));box-shadow:0 12px 28px rgba(11,103,178,.18);transition:transform .22s,box-shadow .22s,filter .22s}.submit-btn:before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 28%,rgba(255,255,255,.34) 50%,transparent 72%);transform:translateX(-120%);animation:buttonShimmer 4.5s ease-in-out infinite}@keyframes buttonShimmer{0%,35%{transform:translateX(-120%)}65%,100%{transform:translateX(120%)}}.submit-btn:hover{transform:translateY(-2px);box-shadow:0 16px 32px rgba(11,103,178,.24);filter:saturate(1.06)}.submit-btn:active{transform:translateY(0) scale(.99)}
+.switch-form-text{text-align:center;margin-top:18px;font-size:12px;color:#718592}.switch-link{color:var(--primary);font-weight:800;cursor:pointer;position:relative}.switch-link:after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .22s}.switch-link:hover:after{transform:scaleX(1);transform-origin:left}
+.success-badge,.error-badge{padding:10px 12px;border-radius:10px;text-align:center;margin-bottom:15px;font-weight:700;font-size:12px;display:none;animation:noticeIn .35s both}.success-badge{background:#edf9f3;border:1px solid #c5ead8;color:var(--success)}.error-badge{background:#fff3f3;border:1px solid #f1c9c9;color:var(--danger)}@keyframes noticeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.42);transform:scale(0);animation:ripple .55s ease-out;pointer-events:none}@keyframes ripple{to{transform:scale(3.8);opacity:0}}.footer-note{text-align:center;color:#8a9aa6;font-size:10px;margin-top:13px;letter-spacing:.2px}.hidden-card{display:none!important}
+@media (max-width:760px){.portal-shell{grid-template-columns:1fr}.info-panel{padding:28px 24px}.contact-note{position:static;margin-top:22px}.form-panel{padding:28px 22px}}
+@media (max-width:520px){body{padding:14px 10px}.input-grid{grid-template-columns:1fr}.input-group.full{grid-column:auto}.info-panel h1{font-size:27px}h2{font-size:24px}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.001ms!important}}
+
+.officer-profile-card{background:linear-gradient(135deg,#fff,#f4f8ff);border:1px solid #dbe6f1}
+.officer-profile-card .eyebrow{font-size:11px;font-weight:800;letter-spacing:1px;color:#2365a7}
+.officer-id-box{min-width:145px;padding:12px 15px;border:1px solid #d8e4ef;border-radius:12px;background:#fff}
+.officer-id-box span{display:block;font-size:10px;font-weight:800;letter-spacing:1px;color:#718096}
+.officer-id-box strong{display:block;margin-top:4px;font-size:15px;color:#17324d}
+@media(max-width:700px){.officer-profile-card .quick{grid-template-columns:1fr!important}}
+
+.citizen-only{display:block}
+body.officer-mode .citizen-only{display:none!important}
+body.officer-mode #officerSectionBtn{display:none!important}
+body:not(.officer-mode) #adminNavBtn{display:none!important}
+</style></head><body><div class="ambient"><span class="orb one"></span><span class="orb two"></span><span class="orb three"></span></div>
+<div class="portal-wrapper"><div class="portal-shell">
+<aside class="info-panel"><div class="gov-tag"><span class="gov-dot"></span> Municipal Corporation</div><h1>Citizen Complaint &amp; Service Portal</h1><p>Register once and use your account to raise civic complaints, track service requests, and stay connected with municipal services.</p><div class="feature-list"><div class="feature"><div class="feature-icon">✓</div><div><strong>Easy Complaint Registration</strong><span>Submit civic issues through a simple digital form.</span></div></div><div class="feature"><div class="feature-icon">⌖</div><div><strong>Service Tracking</strong><span>Keep your complaint details organized for follow-up.</span></div></div><div class="feature"><div class="feature-icon">🔒</div><div><strong>Secure Access</strong><span>Your account area is protected by login credentials.</span></div></div></div><div class="contact-note">Citizen-first digital services • Available 24×7</div></aside>
+<main class="form-panel">
+<div class="registration-container" id="registerCard"><div class="brand-row"><div class="brand-mark">🏛</div> Citizen Services</div><h2>Create your account</h2><p class="subtitle">Enter your details to access municipal complaint services.</p><div id="registerError" class="error-badge" role="alert"></div><form id="registrationForm" novalidate><div class="input-grid">
+<div class="input-group"><label for="first-name">First Name</label><input type="text" id="first-name" placeholder="Enter first name" required autocomplete="given-name"><span class="help-text" id="first-name-error"></span></div>
+<div class="input-group"><label for="last-name">Last Name</label><input type="text" id="last-name" placeholder="Enter last name" required autocomplete="family-name"><span class="help-text" id="last-name-error"></span></div>
+<div class="input-group full"><label for="email">Email Address</label><input type="email" id="email" placeholder="Enter email address" required autocomplete="email"><span class="help-text" id="email-error"></span></div>
+<div class="input-group full"><label for="password">Password</label><div class="password-wrapper"><input type="password" id="password" placeholder="Create a password" required autocomplete="new-password"><span id="togglePassword" class="toggle-password" title="Toggle visibility" role="button" tabindex="0" aria-label="Show password"></span></div><div class="strength"><div id="strengthBar" class="strength-bar"></div></div><div id="strengthText" class="strength-text"></div><span class="help-text" id="password-error"></span></div>
+<div class="input-group"><label for="mobile">Mobile Number</label><input type="tel" id="mobile" placeholder="10-digit number" pattern="[0-9]{10}" required autocomplete="tel"><span class="help-text" id="mobile-error"></span></div>
+<div class="input-group"><label for="id-proof">ID Proof Type</label><select id="id-proof" required><option value="" disabled selected>Select ID proof</option><option value="aadhar">Aadhar Card</option><option value="pan">PAN Card</option><option value="driving-licence">Driving Licence</option></select><span class="help-text" id="id-proof-error"></span></div>
+<div class="input-group full"><label for="id-number" id="id-number-label">ID Proof Number</label><input type="text" id="id-number" placeholder="Select ID proof type first" required autocomplete="off"><span class="help-text" id="id-number-error"></span></div></div>
+<button type="submit" class="submit-btn">Register &amp; Continue</button><p class="switch-form-text">Already have an account? <span class="switch-link" id="showLogin">Login here</span></p></form><div class="footer-note">Municipal Citizen Portal • Enhanced citizen services</div></div>
+<div class="registration-container hidden-card" id="loginCard">
+<div class="brand-row"><div class="brand-mark">🏛</div> Citizen Services</div>
+<div id="successMessage" class="success-badge" role="status">Registration successful! Please login.</div>
+<div id="loginError" class="error-badge" role="alert"></div>
+<h2 id="loginTitle">Welcome back</h2><p class="subtitle" id="loginSubtitle">Choose how you want to sign in.</p>
+<div class="login-role-switch" role="tablist" aria-label="Login type">
+<button type="button" class="login-role active" id="userLoginTab">👤 User Login</button>
+<button type="button" class="login-role" id="officerLoginTab">👷 Officer Login</button>
+</div>
+<div id="userLoginPanel">
+<form id="loginForm" novalidate><div class="input-group"><label for="login-email">Email Address</label><input type="email" id="login-email" placeholder="Enter your email" required autocomplete="email"><span class="help-text" id="login-email-error"></span></div><div class="input-group"><label for="login-password">Password</label><div class="password-wrapper"><input type="password" id="login-password" placeholder="Enter your password" required autocomplete="current-password"><span id="toggleLogPassword" class="toggle-password" title="Toggle visibility" role="button" tabindex="0" aria-label="Show password"></span></div><span class="help-text" id="login-password-error"></span></div><button type="submit" class="submit-btn">Sign In as User</button><p class="switch-form-text">New here? <span class="switch-link" id="showRegister">Create an account</span></p></form>
+</div>
+<div id="officerLoginPanel" style="display:none">
+<div class="role-info"><b>Officer access</b><span>Officer details are required before the Officer Section and its features can be opened.</span></div>
+<form id="officerLoginForm" novalidate>
+<div class="input-group"><label for="login-officer-id">Officer ID</label><input id="login-officer-id" placeholder="Example: OFF-2026-001" autocomplete="off"><span class="help-text" id="login-officer-id-error"></span></div>
+<div class="input-group"><label for="login-officer-name">Officer Name</label><input id="login-officer-name" placeholder="Enter full officer name" autocomplete="name"><span class="help-text" id="login-officer-name-error"></span></div>
+<div class="input-group"><label for="login-officer-designation">Designation</label><input id="login-officer-designation" placeholder="Example: Municipal Officer" autocomplete="organization-title"><span class="help-text" id="login-officer-designation-error"></span></div>
+<div class="input-group"><label for="login-officer-department">Department / Office</label><input id="login-officer-department" placeholder="Example: Municipal Corporation" autocomplete="organization"><span class="help-text" id="login-officer-department-error"></span></div>
+<div class="input-group"><label for="login-officer-location">Municipal Location</label><input id="login-officer-location" placeholder="Example: Kanpur Municipal Corporation"><span class="help-text" id="login-officer-location-error"></span></div>
+<button type="submit" class="submit-btn">🔐 Enter Officer Section</button>
+<p class="login-note">Officer login is a frontend demo for now. A live version should verify these details against the municipal backend.</p>
+</form>
+</div>
+<div class="footer-note">Municipal Citizen Portal • Secure role-based access</div></div>
+</main></div></div><script>
+'use strict';
+const registerCard=document.getElementById('registerCard');
+const loginCard=document.getElementById('loginCard');
+const successMessage=document.getElementById('successMessage');
+const loginError=document.getElementById('loginError');
+const idInput=document.getElementById('id-number');
+const idSelect=document.getElementById('id-proof');
+const idLabel=document.getElementById('id-number-label');
+const passwordInput=document.getElementById('password');
+const strengthBar=document.getElementById('strengthBar');
+const strengthText=document.getElementById('strengthText');
+let account=null;
+
+function showLoginCard(){registerCard.classList.add('hidden-card');loginCard.classList.remove('hidden-card');loginError.style.display='none';loginCard.style.animation='none';void loginCard.offsetWidth;loginCard.style.animation='wrapperIn .55s cubic-bezier(.2,.75,.25,1) both';}
+function showRegisterCard(){loginCard.classList.add('hidden-card');registerCard.classList.remove('hidden-card');successMessage.style.display='none';loginError.style.display='none';registerCard.style.animation='none';void registerCard.offsetWidth;registerCard.style.animation='wrapperIn .55s cubic-bezier(.2,.75,.25,1) both';}
+
+document.getElementById('showLogin').addEventListener('click',showLoginCard);
+document.getElementById('showRegister').addEventListener('click',showRegisterCard);
+
+function setError(id,message){const input=document.getElementById(id),box=document.getElementById(id+'-error');if(input)input.classList.toggle('invalid',Boolean(message));if(box){box.textContent=message||'';box.classList.toggle('error',Boolean(message));}}
+function clearErrors(form){form.querySelectorAll('.invalid').forEach(el=>el.classList.remove('invalid'));form.querySelectorAll('.help-text').forEach(el=>{el.textContent='';el.classList.remove('error')});}
+
+function updateIdRules(){
+  const type=idSelect.value; idInput.value=''; idInput.classList.remove('invalid');
+  if(type==='aadhar'){idLabel.textContent='Aadhar Number';idInput.placeholder='Enter 12-digit Aadhar number';idInput.maxLength=12;idInput.inputMode='numeric';}
+  else if(type==='pan'){idLabel.textContent='PAN Number';idInput.placeholder='Enter PAN (e.g. ABCDE1234F)';idInput.maxLength=10;idInput.inputMode='text';}
+  else if(type==='driving-licence'){idLabel.textContent='Driving Licence Number';idInput.placeholder='Enter driving licence number';idInput.maxLength=20;idInput.inputMode='text';}
+  else{idLabel.textContent='ID Proof Number';idInput.placeholder='Select ID proof type first';idInput.removeAttribute('maxlength');}
+  document.getElementById('id-number-error').textContent='';
+}
+idSelect.addEventListener('change',updateIdRules);
+idInput.addEventListener('input',()=>{if(idSelect.value==='aadhar')idInput.value=idInput.value.replace(/\D/g,'').slice(0,12);if(idSelect.value==='pan')idInput.value=idInput.value.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,10)});
+document.getElementById('mobile').addEventListener('input',e=>e.target.value=e.target.value.replace(/\D/g,'').slice(0,10));
+
+function attachToggle(toggleId,inputId){const toggle=document.getElementById(toggleId),input=document.getElementById(inputId);function flip(){const visible=input.type==='text';input.type=visible?'password':'text';toggle.classList.toggle('visible',!visible);toggle.setAttribute('aria-label',visible?'Show password':'Hide password')}toggle.addEventListener('click',flip);toggle.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();flip()}})}
+attachToggle('togglePassword','password');attachToggle('toggleLogPassword','login-password');
+
+function validId(type,value){if(type==='aadhar')return/^\d{12}$/.test(value);if(type==='pan')return/^[A-Z]{5}\d{4}[A-Z]$/.test(value);if(type==='driving-licence')return/^[A-Za-z0-9 -]{5,20}$/.test(value);return false}
+function passwordScore(v){let s=0;if(v.length>=6)s++;if(v.length>=10)s++;if(/[A-Z]/.test(v)&&/[a-z]/.test(v))s++;if(/\d/.test(v))s++;if(/[^A-Za-z0-9]/.test(v))s++;return Math.min(s,5)}
+function updateStrength(){const s=passwordScore(passwordInput.value);const labels=['','Very weak','Weak','Fair','Strong','Excellent'];strengthBar.style.width=(s*20)+'%';strengthText.textContent=passwordInput.value?`Password strength: ${labels[s]}`:''}
+passwordInput.addEventListener('input',updateStrength);
+
+function focusFirstError(form){const el=form.querySelector('.invalid');if(el)el.focus()}
+
+const registrationForm=document.getElementById('registrationForm');
+registrationForm.addEventListener('submit',function(event){
+  event.preventDefault();clearErrors(this);
+  const first=document.getElementById('first-name').value.trim(),last=document.getElementById('last-name').value.trim(),email=document.getElementById('email').value.trim().toLowerCase(),password=passwordInput.value,mobile=document.getElementById('mobile').value.trim(),type=idSelect.value,idNumber=idInput.value.trim();
+  let ok=true;
+  if(!first){setError('first-name','First name is required.');ok=false}
+  if(!last){setError('last-name','Last name is required.');ok=false}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){setError('email','Enter a valid email address.');ok=false}
+  if(password.length<6){setError('password','Password must be at least 6 characters.');ok=false}
+  if(!/^\d{10}$/.test(mobile)){setError('mobile','Enter exactly 10 digits.');ok=false}
+  if(!type){setError('id-proof','Select an ID proof type.');ok=false}
+  else if(!validId(type,idNumber)){setError('id-number',type==='aadhar'?'Aadhar must contain 12 digits.':type==='pan'?'PAN must look like ABCDE1234F.':'Enter a valid driving licence number.');ok=false}
+  if(!ok){focusFirstError(this);return}
+  account={email,password,first,last};
+  document.getElementById('login-email').value=email;
+  document.getElementById('login-password').value='';
+  successMessage.style.display='block';showLoginCard();successMessage.style.display='block';
+  setTimeout(()=>document.getElementById('login-password').focus(),120);
+});
+
+document.getElementById('loginForm').addEventListener('submit',function(event){
+  event.preventDefault();clearErrors(this);loginError.style.display='none';loginError.style.background='';loginError.style.color='';
+  const email=document.getElementById('login-email').value.trim().toLowerCase(),password=document.getElementById('login-password').value;
+  let ok=true;if(!email){setError('login-email','Email is required.');ok=false}else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){setError('login-email','Enter a valid email address.');ok=false}
+  if(!password){setError('login-password','Password is required.');ok=false}if(!ok){focusFirstError(this);return}
+  if(!account){loginError.textContent='No registered account found. Please create an account first.';loginError.style.display='block';return}
+  if(email!==account.email||password!==account.password){loginError.textContent='Invalid email or password.';loginError.style.display='block';return}
+  loginError.textContent=`Welcome back, ${account.first}! Login successful.`;loginError.style.display='block';loginError.style.background='rgba(53,211,155,.13)';loginError.style.borderColor='rgba(53,211,155,.38)';loginError.style.color='#9ef4d1';
+});
+
+document.querySelectorAll('.submit-btn').forEach(btn=>btn.addEventListener('click',e=>{const r=document.createElement('span'),rect=btn.getBoundingClientRect(),size=Math.max(rect.width,rect.height);r.className='ripple';r.style.width=r.style.height=size+'px';r.style.left=(e.clientX-rect.left-size/2)+'px';r.style.top=(e.clientY-rect.top-size/2)+'px';btn.appendChild(r);r.addEventListener('animationend',()=>r.remove())}));
+</script><style>
+/* Role-based login */
+.login-role-switch{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:18px 0 16px}
+.login-role{border:1px solid #d8e5ee;background:#f7fafc;color:#5d7485;border-radius:11px;padding:11px 10px;font-weight:850;cursor:pointer;transition:.2s}
+.login-role.active{background:#eaf5fc;color:#0b67b2;border-color:#b9d9ee;box-shadow:0 5px 14px rgba(11,103,178,.08)}
+.role-info{background:#f3f8fb;border:1px solid #dce8f1;border-radius:11px;padding:11px 12px;margin-bottom:14px}
+.role-info b{display:block;color:#0b67b2;font-size:12px;margin-bottom:3px}.role-info span,.login-note{display:block;color:#8293a0;font-size:10px;line-height:1.5}
+#officerLoginPanel .input-group{margin-bottom:12px}
+body:not(.officer-mode) #officerSectionBtn{display:none!important}
+body:not(.officer-mode) #officerProfileCard{display:none!important}
+body.officer-mode #officerSectionBtn{display:none!important}
+body.officer-mode .citizen-only,body.officer-mode #citizenDashboardFeatures{display:none!important}
+body:not(.officer-mode) .officer-only{display:none!important}
+body:not(.officer-mode) #officerSectionBtn{display:none!important}
+
+/* Civic dashboard extension */
+.app-shell{display:none;min-height:100vh;background:#f4f8fb;color:#17324d}.app-shell.active{display:block}.topbar{height:72px;background:#fff;border-bottom:1px solid #dce8f1;display:flex;align-items:center;justify-content:space-between;padding:0 4vw;position:sticky;top:0;z-index:20;box-shadow:0 4px 18px rgba(29,70,100,.06)}.brand{display:flex;align-items:center;gap:10px;font-weight:850;color:#0b67b2}.brand b{font-size:14px}.brand small{display:block;color:#718596;font-weight:600;font-size:10px}.nav{display:flex;gap:6px;align-items:center}.nav button,.icon-btn{border:0;background:transparent;padding:10px 12px;border-radius:10px;color:#587083;font-weight:750;cursor:pointer}.nav button:hover,.nav button.active{background:#edf6fc;color:#0b67b2}.icon-btn{font-size:18px}.user-chip{display:flex;align-items:center;gap:8px;background:#f1f7fb;border:1px solid #deebf3;border-radius:999px;padding:6px 10px 6px 6px;font-size:12px;font-weight:800}.avatar{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#0b67b2;color:#fff}.dashboard{max-width:1320px;margin:auto;padding:28px 4vw 50px}.page{display:none;animation:fadeUp .35s ease}.page.active{display:block}@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}.hero{display:flex;justify-content:space-between;gap:20px;align-items:center;margin-bottom:22px}.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:1.1px;color:#0b67b2;font-weight:900}.hero h1{font-size:30px;letter-spacing:-.8px;margin:5px 0}.hero p{color:#6e8190;font-size:13px}.primary{border:0;border-radius:11px;background:#0b67b2;color:white;padding:13px 17px;font-weight:850;cursor:pointer;box-shadow:0 10px 22px rgba(11,103,178,.18)}.primary:hover{transform:translateY(-1px)}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:#fff;border:1px solid #dce8f1;border-radius:16px;box-shadow:0 8px 24px rgba(30,73,104,.06)}.stat{padding:18px;position:relative;overflow:hidden}.stat:after{content:'';position:absolute;width:70px;height:70px;border-radius:50%;right:-30px;top:-30px;background:#edf7fc}.stat label{font-size:11px;color:#738898;font-weight:800}.stat strong{font-size:28px;display:block;margin:6px 0}.trend{font-size:10px;color:#16865f;font-weight:800}.grid2{display:grid;grid-template-columns:1.35fr .9fr;gap:16px;margin-top:16px}.section{padding:20px}.section h3{font-size:15px;margin-bottom:14px}.complaint{display:flex;align-items:center;gap:13px;padding:14px 0;border-top:1px solid #edf2f5}.complaint:first-child{border-top:0}.cicon{width:40px;height:40px;border-radius:11px;background:#edf6fc;display:grid;place-items:center}.complaint main{flex:1}.complaint main b{font-size:12px}.complaint main span{display:block;color:#8293a0;font-size:10px;margin-top:4px}.status{padding:5px 8px;border-radius:999px;font-size:9px;font-weight:900}.pending{background:#fff6dd;color:#a46d00}.progress{background:#eaf4ff;color:#176aa2}.resolved{background:#e8f8f0;color:#14734f}.live-list{display:grid;gap:9px}.live-row{display:flex;align-items:center;justify-content:space-between;padding:11px;border-radius:11px;background:#f7fafc}.live-row span{font-size:12px;font-weight:800}.live-row b{font-size:13px}.dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:7px;background:#f59e0b}.dot.red{background:#e25555}.dot.green{background:#21a06a}.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.quick button{padding:15px;border:1px solid #dce8f1;background:#fafdff;border-radius:12px;text-align:left;cursor:pointer}.quick b{display:block;font-size:12px}.quick span{font-size:10px;color:#8293a0}.timeline{display:grid;grid-template-columns:1fr;gap:0}.step{display:flex;gap:13px;position:relative;padding-bottom:20px}.step:before{content:'';position:absolute;left:13px;top:28px;bottom:0;border-left:2px solid #dce8f1}.step:last-child:before{display:none}.circle{width:28px;height:28px;border-radius:50%;background:#dce8f1;color:#6d8190;display:grid;place-items:center;font-size:11px;font-weight:900;z-index:1}.step.done .circle{background:#16865f;color:#fff}.step.current .circle{background:#0b67b2;color:#fff;box-shadow:0 0 0 5px #e5f2fb}.step b{font-size:12px}.step span{display:block;font-size:10px;color:#8293a0;margin-top:3px}.form-card{max-width:900px;margin:auto;padding:24px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field.full{grid-column:1/-1}.field label{display:block;font-size:11px;font-weight:850;color:#526d80;margin-bottom:6px}.field input,.field select,.field textarea{width:100%;border:1px solid #d8e5ee;border-radius:10px;padding:12px;background:#fbfdff;outline:none}.field textarea{min-height:110px;resize:vertical}.drop{border:1.5px dashed #b9d3e4;border-radius:12px;padding:22px;text-align:center;color:#718898;background:#f9fcfe}.drop input{margin-top:8px}.map{height:300px;border-radius:14px;background:linear-gradient(135deg,#e9f4ef,#eef6fc);position:relative;overflow:hidden;border:1px solid #d9e7ef}.map:before,.map:after{content:'';position:absolute;background:#fff;opacity:.8;transform:rotate(25deg);width:150%;height:10px;left:-20%;top:45%}.map:after{transform:rotate(-35deg);top:65%}.pin{position:absolute;width:18px;height:18px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:#e25555;box-shadow:0 0 0 6px rgba(226,85,85,.13);cursor:pointer}.pin:after{content:'';position:absolute;width:6px;height:6px;background:#fff;border-radius:50%;top:6px;left:6px}.analytics{display:grid;grid-template-columns:1fr 1fr;gap:16px}.bar-chart{height:210px;display:flex;align-items:end;gap:12px;padding:20px 10px}.bar{flex:1;background:linear-gradient(180deg,#3ba3dc,#0b67b2);border-radius:7px 7px 2px 2px;min-height:20px;position:relative}.bar span{position:absolute;bottom:-19px;left:50%;transform:translateX(-50%);font-size:9px;color:#7d8f9c}.ring{width:150px;height:150px;border-radius:50%;background:conic-gradient(#0b67b2 0 44%,#18a56a 44% 76%,#f59e0b 76% 91%,#e5edf2 91%);margin:12px auto;display:grid;place-items:center}.ring:after{content:'76%';width:98px;height:98px;border-radius:50%;background:#fff;display:grid;place-items:center;font-weight:900;color:#17324d}.table{width:100%;border-collapse:collapse}.table th,.table td{text-align:left;padding:11px;border-bottom:1px solid #edf2f5;font-size:11px}.table th{color:#718596;text-transform:uppercase;font-size:9px}.toast{position:fixed;right:22px;bottom:22px;background:#17324d;color:#fff;padding:13px 16px;border-radius:12px;box-shadow:0 15px 35px rgba(0,0,0,.18);transform:translateY(120px);opacity:0;transition:.3s;z-index:50;font-size:12px}.toast.show{transform:none;opacity:1}.modal{position:fixed;inset:0;background:rgba(17,43,61,.25);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;z-index:40;padding:18px}.modal.open{display:flex}.modal-card{width:min(620px,100%);background:#fff;border-radius:18px;padding:24px;box-shadow:0 30px 70px rgba(25,60,84,.2)}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.close{border:0;background:#eef4f8;border-radius:50%;width:32px;height:32px;cursor:pointer}.stars{display:flex;gap:7px;margin:12px 0}.stars button{border:0;background:#f3f7fa;border-radius:9px;font-size:20px;padding:8px;cursor:pointer}.stars button.on{background:#fff1c9}.access{position:fixed;left:18px;bottom:18px;z-index:30}.access button{border:1px solid #cbdde8;background:#fff;border-radius:10px;padding:9px;font-weight:800;cursor:pointer}.high-contrast{filter:contrast(1.15)}.dark{background:#102433!important;color:#e8f2f7!important}.dark .topbar,.dark .card,.dark .modal-card,.dark .field input,.dark .field select,.dark .field textarea{background:#173447!important;color:#e8f2f7;border-color:#2b4b5e}.dark .stat label,.dark .hero p,.dark .complaint main span,.dark .live-row{color:#aec0cc}.dark .live-row,.dark .quick button{background:#1c3a4d}.dark .nav button{color:#c7d8e1}.dark .ring:after{background:#173447;color:#fff}.dark .table td,.dark .table th{border-color:#2b4b5e}.lang-hi .en{display:none}.lang-hi .hi{display:inline}.hi{display:none}
+@media(max-width:900px){.stats{grid-template-columns:1fr 1fr}.grid2,.analytics{grid-template-columns:1fr}.nav button{display:none}.nav button.active{display:block}.hero{align-items:flex-start}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}}
+@media(max-width:560px){.stats{grid-template-columns:1fr 1fr}.stats .stat strong{font-size:22px}.hero{display:block}.hero .primary{margin-top:14px}.quick{grid-template-columns:1fr}.dashboard{padding:20px 14px 40px}.topbar{padding:0 14px}.brand small{display:none}}
+</style>
+<div class="app-shell" id="appShell">
+<header class="topbar"><div class="brand"><div class="brand-mark">🏛</div><div><b><span class="en">Municipal Citizen Portal</span><span class="hi">नगरिक सेवा पोर्टल</span></b><small>Complaint & Civic Services</small></div></div><nav class="nav"><button class="active" data-page="home">Dashboard</button><button data-page="complaints" class="citizen-only">My Complaints</button><button data-page="map">Ward Map</button><button data-page="admin" id="adminNavBtn" style="display:none">Admin</button><button id="officerSectionBtn" class="officer-nav-btn">👷 Officer Section</button></nav><div class="user-chip">
+<div class="avatar avatar-photo" id="userAvatar">C</div>
+<span id="userName">Citizen</span>
+<button class="icon-btn" id="profileBtn" title="Profile">👤</button>
+<button class="icon-btn" id="helpBtnTop" title="Help & Customer Care">?</button>
+<button class="icon-btn" id="logout" title="Logout">↪</button>
+</div></header>
+<main class="dashboard">
+<section class="page active" id="home"><div class="hero"><div><div class="eyebrow">Citizen dashboard</div><h1><span class="en">Good morning, Citizen</span><span class="hi">नमस्कार, नागरिक</span> 👋</h1><p>Track civic issues, submit new complaints and stay updated with municipal services.</p></div><button class="primary" data-page="new">＋ Register Complaint</button></div>
+<div class="stats"><div class="card stat"><label>Total Complaints</label><strong class="counter" data-n="18">0</strong><span class="trend">↑ 3 this month</span></div><div class="card stat"><label>Pending</label><strong class="counter" data-n="5">0</strong><span class="trend">Needs attention</span></div><div class="card stat"><label>In Progress</label><strong class="counter" data-n="7">0</strong><span class="trend">Officers assigned</span></div><div class="card stat"><label>Resolved</label><strong class="counter" data-n="6">0</strong><span class="trend">↑ 88% satisfaction</span></div></div>
+<div class="card section user-helpline-card">
+  <h3>📞 Municipal Helplines</h3>
+  <p class="user-helpline-intro">Need help with a civic issue? Call the relevant municipal support number.</p>
+  <div class="call-list">
+    <div class="call-number"><div><span>General Civic Complaints</span><b>1800-000-0001</b></div><a class="call-btn" href="tel:18000000001">☎ Call</a></div>
+    <div class="call-number"><div><span>Sanitation & Garbage</span><b>1800-000-0002</b></div><a class="call-btn" href="tel:18000000002">☎ Call</a></div>
+    <div class="call-number"><div><span>Water / Drainage</span><b>1800-000-0003</b></div><a class="call-btn" href="tel:18000000003">☎ Call</a></div>
+  </div>
+  <p class="demo-phone-note">Demo numbers only — replace them with your official municipal helpline numbers before publishing.</p>
+</div>
+<div class="grid2"><div class="card section"><h3>Recent complaints</h3><div class="complaint"><div class="cicon">🗑️</div><main><b>MCC-2026-001245</b><span>Garbage accumulation • Ward 12 • 2 days ago</span></main><span class="status progress">In Progress</span></div><div class="complaint"><div class="cicon">💡</div><main><b>MCC-2026-001219</b><span>Street light not working • Ward 8 • 5 days ago</span></main><span class="status pending">Pending</span></div><div class="complaint"><div class="cicon">🚰</div><main><b>MCC-2026-001180</b><span>Water leakage • Ward 4 • 12 days ago</span></main><span class="status resolved">Resolved</span></div><button class="primary" data-page="complaints" style="margin-top:12px;background:#edf6fc;color:#0b67b2;box-shadow:none">View all complaints →</button></div>
+<div class="card section"><h3>Live Civic Status</h3><div class="live-list"><div class="live-row"><span><i class="dot red"></i>🗑️ Garbage</span><b>24 Open</b></div><div class="live-row"><span><i class="dot"></i>💡 Street Lights</span><b>12 Open</b></div><div class="live-row"><span><i class="dot green"></i>🚰 Water Supply</span><b>8 Open</b></div><div class="live-row"><span><i class="dot red"></i>🛣️ Roads</span><b>17 Open</b></div><div class="live-row"><span><i class="dot"></i>🚽 Drainage</span><b>11 Open</b></div></div></div></div>
+<div class="card section" style="margin-top:16px"><h3>Quick services</h3><div class="quick"><button data-page="new"><b>📣 Report a problem</b><span>Road, garbage, water, lights and more</span></button><button data-page="map"><b>📍 Complaints near me</b><span>Explore issues across wards</span></button><button data-page="complaints"><b>🎫 Track complaint</b><span>Use your unique complaint ID</span></button></div></div></section>
+<section class="page" id="complaints"><div class="hero"><div><div class="eyebrow">Complaint tracking</div><h1>My Complaints</h1><p>Every complaint has a unique ID and a transparent service timeline.</p></div><button class="primary" data-page="new">＋ New Complaint</button></div><div class="card section"><div class="complaint"><div class="cicon">🗑️</div><main><b>MCC-2026-001245</b><span>Garbage accumulation • Ward 12 • Submitted 28 Sep 2026</span></main><span class="status progress">In Progress</span><button class="primary track-btn" style="padding:8px 11px;font-size:10px">Track</button><button class="edit-complaint-btn" style="padding:8px 11px;font-size:10px">Edit / Correction</button></div><div class="complaint"><div class="cicon">💡</div><main><b>MCC-2026-001219</b><span>Street light • Ward 8 • Submitted 25 Sep 2026</span></main><span class="status pending">Pending</span><button class="primary track-btn" style="padding:8px 11px;font-size:10px">Track</button><button class="edit-complaint-btn" style="padding:8px 11px;font-size:10px">Edit / Correction</button></div><div class="complaint"><div class="cicon">🚰</div><main><b>MCC-2026-001180</b><span>Water leakage • Ward 4 • Submitted 18 Sep 2026</span></main><span class="status resolved">Resolved</span><button class="primary feedback-btn" style="padding:8px 11px;font-size:10px">Feedback</button></div></div></section>
+<section class="page" id="new"><div class="hero"><div><div class="eyebrow">Digital complaint registration</div><h1>Register a Complaint</h1><p>Tell us what happened. We will route it to the appropriate municipal department.</p></div></div><div class="card form-card"><div class="form-grid"><div class="field"><label>Complaint category</label><select id="category"><option>Garbage / Sanitation</option><option>Street Light</option><option>Road Damage</option><option>Water Supply / Leakage</option><option>Drainage / Sewage</option><option>Public Toilet</option><option>Stray Animals</option><option>Illegal Dumping</option></select></div><div class="field"><label>Priority</label><select id="priority"><option>Medium</option><option>High</option><option>Critical</option><option>Low</option></select></div><div class="field full"><label>Complaint description</label><textarea id="description" placeholder="Describe the civic issue, landmark and how long it has existed..."></textarea></div><div class="field"><label>Ward / Area</label><select><option>Ward 12 — Civil Lines</option><option>Ward 8 — Swaroop Nagar</option><option>Ward 4 — Kidwai Nagar</option><option>Ward 17 — Kalyanpur</option></select></div><div class="field"><label>Exact location</label><input placeholder="Landmark / street / house number"></div><div class="field full"><label>Photo / video evidence</label><div class="drop">📸 Drag photos or videos here<br><input type="file" accept="image/*,video/*" multiple></div></div><div class="field full"><label>Map location</label><div class="map"><span class="pin" style="left:36%;top:42%"></span><span class="pin" style="left:64%;top:61%;background:#f59e0b"></span><span class="pin" style="left:75%;top:27%;background:#18a56a"></span></div><small style="color:#8194a2">Demo map • pins represent nearby civic issues. In a production build, connect this to a live map/GPS service.</small></div></div><button class="primary" id="submitComplaint" style="margin-top:18px">Submit Complaint</button></div></section>
+<section class="page" id="map"><div class="hero"><div><div class="eyebrow">Ward intelligence</div><h1>Live Ward Map</h1><p>Complaint density across the city. Colors indicate relative issue volume.</p></div></div><div class="grid2"><div class="card section"><h3>Complaint density</h3><div class="map"><span class="pin" style="left:24%;top:32%"></span><span class="pin" style="left:48%;top:51%;background:#e25555"></span><span class="pin" style="left:72%;top:38%;background:#f59e0b"></span><span class="pin" style="left:57%;top:22%;background:#18a56a"></span><span class="pin" style="left:82%;top:70%;background:#f59e0b"></span><span class="pin" style="left:32%;top:74%;background:#18a56a"></span></div></div><div class="card section"><h3>Ward summary</h3><table class="table"><tr><th>Ward</th><th>Open</th><th>Level</th></tr><tr><td>12</td><td>32</td><td><span class="status pending">High</span></td></tr><tr><td>8</td><td>19</td><td><span class="status pending">Medium</span></td></tr><tr><td>4</td><td>11</td><td><span class="status resolved">Low</span></td></tr><tr><td>17</td><td>26</td><td><span class="status pending">High</span></td></tr></table></div></div></section>
+<section class="page" id="analytics"><div class="hero"><div><div class="eyebrow">Service analytics</div><h1>Complaint Analytics</h1><p>Operational metrics for civic issue management.</p></div></div><div class="analytics"><div class="card section"><h3>Monthly complaint trend</h3><div class="bar-chart"><div class="bar" style="height:48%"><span>May</span></div><div class="bar" style="height:62%"><span>Jun</span></div><div class="bar" style="height:55%"><span>Jul</span></div><div class="bar" style="height:76%"><span>Aug</span></div><div class="bar" style="height:88%"><span>Sep</span></div></div></div><div class="card section"><h3>Resolution rate</h3><div class="ring"></div><p style="text-align:center;color:#718596;font-size:11px">Average resolution time: <b>3.8 days</b></p></div><div class="card section"><h3>Complaints by category</h3><table class="table"><tr><td>🗑️ Garbage</td><td>24%</td></tr><tr><td>🛣️ Roads</td><td>18%</td></tr><tr><td>💡 Street Lights</td><td>14%</td></tr><tr><td>🚰 Water</td><td>12%</td></tr><tr><td>🚽 Drainage</td><td>10%</td></tr></table></div><div class="card section"><h3>Department workload</h3><table class="table"><tr><th>Department</th><th>Open</th><th>Avg.</th></tr><tr><td>Sanitation</td><td>34</td><td>2.8d</td></tr><tr><td>Engineering</td><td>27</td><td>4.1d</td></tr><tr><td>Water</td><td>16</td><td>3.2d</td></tr></table></div></div></section>
+<section class="page" id="admin">
+<div class="hero"><div><div class="eyebrow">User Administration</div><h1>Admin Dashboard</h1><p>Manage citizen complaints, citizen accounts, correction requests and feedback. Officer field-work tools are kept in the separate Officer Section.</p></div></div>
+<div class="stats">
+<div class="card stat"><label>New Complaints</label><strong>42</strong><span class="trend">Today</span></div>
+<div class="card stat"><label>Citizens</label><strong>1,284</strong><span class="trend">Registered users</span></div>
+<div class="card stat"><label>Pending Review</label><strong>17</strong><span class="trend">Needs attention</span></div>
+<div class="card stat"><label>Correction Requests</label><strong>6</strong><span class="trend">Citizen requests</span></div>
+</div>
+<div class="grid2">
+<div class="card section"><h3>Citizen & Complaint Management</h3><div class="quick">
+<button><b>📋 View All Complaints</b><span>Review citizen complaints and their current status</span></button>
+<button><b>👥 Citizen Accounts</b><span>View registered users and their complaint history</span></button>
+<button><b>✏️ Correction Requests</b><span>Review requests to correct complaint information</span></button>
+<button><b>⭐ Citizen Feedback</b><span>Read feedback submitted after complaint resolution</span></button>
+</div></div>
+<div class="card section"><h3>User Support</h3><div class="quick">
+<button><b>🔎 Search Complaint</b><span>Find a complaint using its unique complaint ID</span></button>
+<button><b>📢 Citizen Notices</b><span>View service messages and complaint notifications</span></button>
+<button><b>🆘 Support Requests</b><span>Review citizen help and customer-care requests</span></button>
+<button><b>📄 Complaint Reports</b><span>View user-related complaint summaries</span></button>
+</div></div>
+</div>
+<div class="card section officer-only" style="margin-top:16px">
+<h3>Role separation</h3>
+<p style="color:#718596;font-size:12px;line-height:1.6">Admin access on this portal is limited to citizen/user-related information. Officer assignments, field visits, work updates, evidence verification and officer analytics are not available here. Use the separate <b>Officer Section</b> button in the top bar and verify an Officer ID to enter officer mode.</p>
+</div>
+</section>
+
+<div class="card officer-profile-card officer-only" id="officerProfileCard" style="margin-bottom:20px;">
+  <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+    <div class="avatar" id="officerProfileAvatar" style="width:62px;height:62px;font-size:23px;">O</div>
+    <div style="flex:1;min-width:230px;">
+      <div class="eyebrow">MUNICIPAL CORPORATION • VERIFIED OFFICER</div>
+      <h2 id="officerProfileName" style="margin:4px 0;">Municipal Officer</h2>
+      <p id="officerProfileLocation" class="muted" style="margin:0;">Kanpur Municipal Corporation</p>
+    </div>
+    <div class="officer-id-box">
+      <span>OFFICER ID</span>
+      <strong id="officerProfileId">Not verified</strong>
+    </div>
+  </div>
+</div>
+
+<div class="card section officer-only" id="officerComplaintManagement" style="margin-bottom:20px;">
+  <div class="eyebrow">COMPLAINT MANAGEMENT</div>
+  <h3 style="margin-top:5px;">My Complaints</h3>
+  <p class="muted">View complaints assigned to you and review citizen complaint details.</p>
+  <div class="quick" style="grid-template-columns:repeat(3,1fr);margin-top:12px;">
+    <button type="button" onclick="officerComplaintView('assigned')">
+      <b>📋 My Assigned Complaints</b><span>View complaints assigned to your Officer ID</span>
+    </button>
+    <button type="button" onclick="officerComplaintView('all')">
+      <b>📂 All Complaints</b><span>Read citizen complaints and complaint details</span>
+    </button>
+    <button type="button" onclick="officerComplaintView('priority')">
+      <b>🚨 Priority Complaints</b><span>View urgent complaints requiring action</span>
+    </button>
+  </div>
+</div>
+
+<section class="page" id="officer">
+<div class="hero"><div><div class="eyebrow">Verified Officer Area</div><h1>Officer Dashboard</h1><p id="officerWelcome">Officer work tools are available after Officer ID verification.</p></div><button class="primary" id="exitOfficer">Exit Officer Section</button></div>
+<div class="stats">
+<div class="card stat"><label>Assigned Complaints</label><strong>12</strong><span class="trend">My cases</span></div>
+<div class="card stat"><label>Pending Field Visits</label><strong>5</strong><span class="trend">Today</span></div>
+<div class="card stat"><label>In Progress</label><strong>4</strong><span class="trend">Active cases</span></div>
+<div class="card stat"><label>Completed Today</label><strong>7</strong><span class="trend">Work updates</span></div>
+</div>
+<div class="grid2">
+<div class="card section"><h3>Officer Work</h3><div class="quick">
+<button><b>📍 My Assigned Complaints</b><span>Read complaints assigned to your officer ID</span></button>
+<button><b>🛠️ Update Field Status</b><span>Mark work as verified, in progress or completed</span></button>
+<button><b>📷 Upload Field Evidence</b><span>Add photos and completion evidence</span></button>
+<button><b>🗺️ Today's Route</b><span>View assigned ward visits and locations</span></button>
+</div></div>
+<div class="card section"><h3>Complaint Analysis</h3><div class="quick">
+<button><b>📊 Work Analysis</b><span>Analyse assigned complaints, status and resolution time</span></button>
+<button><b>🔎 Read All Complaints</b><span>Review complaint descriptions and evidence</span></button>
+<button><b>⚠️ Priority Cases</b><span>See high and critical complaints needing attention</span></button>
+<button><b>📈 Resolution Report</b><span>Review completed work and pending cases</span></button>
+</div></div>
+</div>
+<div class="card section" style="margin-top:16px"><h3>Officer Activity</h3><table class="table"><tr><th>Complaint</th><th>Category</th><th>Status</th><th>Action</th></tr><tr><td>MCC-2026-001245</td><td>Garbage</td><td><span class="status progress">In Progress</span></td><td>Field visit scheduled</td></tr><tr><td>MCC-2026-001219</td><td>Street Light</td><td><span class="status pending">Pending</span></td><td>Review location</td></tr><tr><td>MCC-2026-001180</td><td>Water</td><td><span class="status resolved">Resolved</span></td><td>Evidence uploaded</td></tr></table></div>
+</section>
+</main><div class="access"><button id="contrast">◐ Accessibility</button></div><div class="toast" id="toast"></div>
+<div class="modal" id="successModal" style="z-index:60"><div class="modal-card" style="width:min(520px,100%);text-align:center;border:1px solid #ccebdc;padding:32px 28px;animation:successPop .45s cubic-bezier(.2,.8,.2,1) both"><div style="width:68px;height:68px;margin:0 auto 16px;border-radius:50%;display:grid;place-items:center;background:#e8f8f0;color:#15865c;font-size:34px;font-weight:900;box-shadow:0 0 0 10px #f2fbf6">✓</div><div class="eyebrow">Complaint Registered</div><h2 style="text-align:center;font-size:25px;margin:8px 0">Your complaint is registered</h2><p style="color:#718596;font-size:13px;line-height:1.6">Thank you for reporting the civic issue. Your complaint has been successfully submitted and recorded.</p><div id="successComplaintId" style="display:inline-block;margin:14px 0;padding:10px 16px;border-radius:10px;background:#edf6fc;color:#0b67b2;font-size:15px;font-weight:900;letter-spacing:.5px">MCC-2026-000000</div><p style="color:#15865c;font-size:13px;font-weight:800">Further action will be taken soon.</p><button class="primary" id="successClose" style="margin-top:18px;min-width:150px">Continue</button></div></div>
+<div class="modal" id="trackModal"><div class="modal-card"><div class="modal-head"><div><div class="eyebrow">Complaint tracking</div><h2 id="trackId">MCC-2026-001245</h2></div><button class="close" data-close="trackModal">×</button></div><div class="timeline"><div class="step done"><div class="circle">✓</div><div><b>Submitted</b><span>28 Sep • Complaint received successfully</span></div></div><div class="step done"><div class="circle">✓</div><div><b>Verified</b><span>28 Sep • Details and location verified</span></div></div><div class="step done"><div class="circle">✓</div><div><b>Assigned</b><span>29 Sep • Sanitation officer assigned</span></div></div><div class="step current"><div class="circle">4</div><div><b>In Progress</b><span>Work team has been notified and action is underway</span></div></div><div class="step"><div class="circle">5</div><div><b>Resolved</b><span>Awaiting completion</span></div></div></div></div></div>
+
+<div class="modal" id="profileModal">
+  <div class="modal-card profile-modal">
+    <div class="modal-head">
+      <div><div class="eyebrow">My account</div><h2>Profile</h2></div>
+      <button class="close" data-close="profileModal">×</button>
+    </div>
+    <div class="profile-head">
+      <div class="profile-avatar-wrap">
+        <img id="profilePreview" class="profile-avatar-img" alt="Profile photo" />
+        <div id="profileFallback" class="profile-avatar-fallback">C</div>
+        <label class="photo-upload" for="profilePhoto">📷 Change photo</label>
+        <input id="profilePhoto" type="file" accept="image/*" hidden>
+      </div>
+      <div><b id="profileDisplayName">Citizen</b><span id="profileDisplayEmail">citizen@example.com</span></div>
+    </div>
+    <div class="form-grid profile-grid">
+      <div class="field"><label>First name</label><input id="editFirstName"></div>
+      <div class="field"><label>Last name</label><input id="editLastName"></div>
+      <div class="field"><label>Mobile number</label><input id="editMobile" inputmode="numeric" maxlength="10"></div>
+      <div class="field"><label>Email address</label><input id="editEmail" type="email"></div>
+      <div class="field full"><label>Address / locality</label><input id="editAddress" placeholder="Enter your locality"></div>
+    </div>
+    <button class="primary" id="saveProfile" style="margin-top:16px">Save Profile</button>
+  </div>
+</div>
+
+<div class="modal" id="correctionModal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div><div class="eyebrow">Complaint correction</div><h2>Request a correction</h2></div>
+      <button class="close" data-close="correctionModal">×</button>
+    </div>
+    <p id="correctionComplaintId" style="color:#718596;font-size:12px;margin-bottom:12px"></p>
+    <div class="field"><label>What would you like to correct?</label>
+      <select id="correctionType"><option>Description</option><option>Location / Ward</option><option>Contact information</option><option>Uploaded evidence</option><option>Other</option></select>
+    </div>
+    <div class="field" style="margin-top:12px"><label>Correct information</label>
+      <textarea id="correctionText" placeholder="Enter the corrected information and explain the change..."></textarea>
+    </div>
+    <button class="primary" id="sendCorrection" style="margin-top:14px">Submit Correction Request</button>
+  </div>
+</div>
+
+<div class="modal" id="helpModal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div><div class="eyebrow">Support centre</div><h2>Help & Customer Care</h2></div>
+      <button class="close" data-close="helpModal">×</button>
+    </div>
+    <div class="help-grid">
+      <button class="help-card" data-help-action="complaint">📣<b>Register a complaint</b><span>Report garbage, roads, water, lights and other civic issues.</span></button>
+      <button class="help-card" data-help-action="track">🎫<b>Track complaint</b><span>Check the latest status and service timeline.</span></button>
+      <button class="help-card" data-help-action="correction">✏️<b>Correction request</b><span>Ask for an update if complaint details were entered incorrectly.</span></button>
+      <button class="help-card" data-help-action="password">🔐<b>Account help</b><span>Get guidance for login and profile issues.</span></button>
+    </div>
+    <div class="support-contact">
+      <b>Customer Care</b>
+      <p>Available for portal assistance and complaint support.</p>
+      <div class="support-actions">
+        <a href="tel:18001234567">📞 Call 1800-123-4567</a>
+        <a href="mailto:support@municipalportal.example">✉️ Email Customer Care</a>
+      </div>
+      <small>Replace the demo phone/email with your corporation's official customer-care details before publishing.</small>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="feedbackModal"><div class="modal-card"><div class="modal-head"><div><div class="eyebrow">Citizen feedback</div><h2>How did we do?</h2></div><button class="close" data-close="feedbackModal">×</button></div><p style="color:#718596;font-size:12px">Rate the resolution of MCC-2026-001180.</p><div class="stars" id="stars"><button>★</button><button>★</button><button>★</button><button>★</button><button>★</button></div><textarea id="feedbackText" placeholder="Optional comment" style="width:100%;min-height:90px;border:1px solid #d8e5ee;border-radius:10px;padding:12px"></textarea><button class="primary" id="sendFeedback" style="margin-top:14px">Submit Feedback</button></div></div><div class="modal" id="officerLoginModal" style="display:none"><div class="modal-card officer-login-card"><div class="modal-head"><div><div class="eyebrow">Officer verification</div><h2>Officer Login</h2></div><button class="close" data-close="officerLoginModal">×</button></div><p style="color:#718596;font-size:12px;line-height:1.55">Officer work is separated from Admin. Enter your Officer ID and Officer Name to access officer work, complaints and analysis.</p><div class="field" style="margin-top:16px"><label for="officerIdInput">Officer ID</label><input id="officerIdInput" placeholder="Example: OFF-2026-001" autocomplete="off"></div><div class="field" style="margin-top:12px"><label for="officerNameInput">Officer Name</label><input id="officerNameInput" placeholder="Enter Officer Name" autocomplete="name"></div><div id="officerIdError" class="error-badge" style="margin-top:10px">Please enter a valid Officer ID.</div><button class="primary" id="verifyOfficer" style="margin-top:12px;width:100%">Verify Officer ID</button><small style="display:block;margin-top:10px;color:#8a9aa6;font-size:9px">Demo: any non-empty Officer ID is accepted. In the live version, verify it against your backend database.</small></div></div>
+</div><script>
+const oldLoginForm=document.getElementById('loginForm');
+const originalLoginHandler=oldLoginForm.onsubmit;
+oldLoginForm.addEventListener('submit',function(){
+  setTimeout(()=>{
+    if(account && document.getElementById('loginError').textContent.includes('Login successful')) launchApp('user');
+  },50);
+});
+
+// Separate Officer Login flow. Officer details are collected before any officer UI is opened.
+const officerLoginForm=document.getElementById('officerLoginForm');
+officerLoginForm.addEventListener('submit',function(event){
+ event.preventDefault();
+ ['login-officer-id','login-officer-name','login-officer-designation','login-officer-department','login-officer-location'].forEach(id=>document.getElementById(id).classList.remove('invalid'));
+ document.getElementById('loginError').style.display='none';
+ const id=document.getElementById('login-officer-id').value.trim().toUpperCase();
+ const name=document.getElementById('login-officer-name').value.trim();
+ const designation=document.getElementById('login-officer-designation').value.trim();
+ const department=document.getElementById('login-officer-department').value.trim();
+ const location=document.getElementById('login-officer-location').value.trim();
+ let ok=true;
+ const checks=[['login-officer-id',id,'Officer ID is required.'],['login-officer-name',name,'Officer Name is required.'],['login-officer-designation',designation,'Designation is required.'],['login-officer-department',department,'Department / Office is required.'],['login-officer-location',location,'Municipal Location is required.']];
+ for(const [field,val,msg] of checks){if(!val){document.getElementById(field).classList.add('invalid');const e=document.getElementById(field+'-error');e.textContent=msg;ok=false;}else document.getElementById(field+'-error').textContent='';}
+ if(!ok){document.querySelector('#officerLoginPanel .invalid')?.focus();return;}
+ officerVerified=true;verifiedOfficerId=id;verifiedOfficerName=name;
+ document.body.classList.add('officer-mode');
+ document.getElementById('officerProfileId').textContent=id;
+ document.getElementById('officerProfileName').textContent=name;
+ document.getElementById('officerProfileLocation').textContent=location;
+ document.getElementById('officerProfileAvatar').textContent=name.charAt(0).toUpperCase();
+ document.getElementById('officerWelcome').textContent='Welcome, '+name+' • Officer ID: '+id+' • '+designation+' • '+department+' • Review complaints, update field work and analyse your assigned workload.';
+ launchApp('officer');
+ toast('Officer login successful. Officer features are now available.');
+});
+
+const userLoginTab=document.getElementById('userLoginTab'), officerLoginTab=document.getElementById('officerLoginTab');
+userLoginTab.addEventListener('click',()=>{
+ userLoginTab.classList.add('active');officerLoginTab.classList.remove('active');
+ document.getElementById('userLoginPanel').style.display='block';document.getElementById('officerLoginPanel').style.display='none';
+ document.getElementById('loginTitle').textContent='User Login';document.getElementById('loginSubtitle').textContent='Sign in for citizen complaint and civic services.';
+});
+officerLoginTab.addEventListener('click',()=>{
+ officerLoginTab.classList.add('active');userLoginTab.classList.remove('active');
+ document.getElementById('userLoginPanel').style.display='none';document.getElementById('officerLoginPanel').style.display='block';
+ document.getElementById('loginTitle').textContent='Officer Login';document.getElementById('loginSubtitle').textContent='Enter your municipal officer information to continue.';
+ setTimeout(()=>document.getElementById('login-officer-id').focus(),80);
+});
+function launchApp(role='user'){
+ document.querySelector('.portal-wrapper').style.display='none';
+ document.getElementById('appShell').classList.add('active');
+ if(role==='officer'){
+  document.body.classList.add('officer-mode');
+  document.getElementById('officerSectionBtn').style.display='none';
+  document.getElementById('adminNavBtn').style.display='inline-flex';
+  document.getElementById('userName').textContent=verifiedOfficerName||'Officer';
+  document.getElementById('userAvatar').textContent=(verifiedOfficerName||'O').charAt(0).toUpperCase();
+  page('officer');
+ }else{
+  document.body.classList.remove('officer-mode');
+  document.getElementById('officerSectionBtn').style.display='none';
+  document.getElementById('adminNavBtn').style.display='none';
+  document.getElementById('userName').textContent=(account.first+' '+account.last).trim();
+  document.getElementById('userAvatar').textContent=account.first.charAt(0).toUpperCase();
+  page('home');
+ }
+ document.querySelectorAll('.counter').forEach(el=>{let n=+el.dataset.n;let i=0;let t=setInterval(()=>{i=Math.min(n,i+1);el.textContent=i;if(i===n)clearInterval(t)},35)});
+}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(window.__toast);window.__toast=setTimeout(()=>t.classList.remove('show'),2800)}
+function page(name){
+if(name==='officer'&&!officerVerified){officerModal.classList.add('open');return}
+if(name==='admin'&&!officerVerified){toast('Officer login required.');officerModal.classList.add('open');return}
+if(officerVerified && name==='complaints'){toast('Citizen complaint section is hidden in Officer mode.');return}
+document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===name));
+document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===name));
+window.scrollTo({top:0,behavior:'smooth'})
+}
+document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>page(b.dataset.page)));
+document.getElementById('logout').addEventListener('click',()=>{officerVerified=false;verifiedOfficerId='';verifiedOfficerName='';document.body.classList.remove('officer-mode');document.getElementById('adminNavBtn').style.display='none';document.getElementById('officerSectionBtn').style.display='none';document.getElementById('appShell').classList.remove('active');document.querySelector('.portal-wrapper').style.display='block';document.getElementById('userLoginTab').click();showLoginCard();toast('You have been logged out.')});
+document.querySelectorAll('.track-btn').forEach(b=>b.addEventListener('click',()=>document.getElementById('trackModal').classList.add('open')));
+document.querySelectorAll('.feedback-btn').forEach(b=>b.addEventListener('click',()=>document.getElementById('feedbackModal').classList.add('open')));
+document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>document.getElementById(b.dataset.close).classList.remove('open')));
+document.getElementById('submitComplaint').addEventListener('click',()=>{const desc=document.getElementById('description').value.trim();if(!desc){toast('Please add a short description first.');document.getElementById('description').focus();return}const id='MCC-2026-'+String(1246+Math.floor(Math.random()*700)).padStart(6,'0');document.getElementById('successComplaintId').textContent=id;document.getElementById('successModal').classList.add('open');document.getElementById('description').value=''});
+document.getElementById('successClose').addEventListener('click',()=>{document.getElementById('successModal').classList.remove('open');page('complaints')});
+document.getElementById('successModal').addEventListener('click',e=>{if(e.target.id==='successModal'){document.getElementById('successModal').classList.remove('open');page('complaints')}});
+let rating=0;document.querySelectorAll('#stars button').forEach((b,i)=>b.addEventListener('click',()=>{rating=i+1;document.querySelectorAll('#stars button').forEach((x,j)=>x.classList.toggle('on',j<rating))}));document.getElementById('sendFeedback').addEventListener('click',()=>{if(!rating){toast('Please select a rating.');return}document.getElementById('feedbackModal').classList.remove('open');toast('Thank you! Your feedback was recorded.')});
+document.getElementById('contrast').addEventListener('click',()=>{document.getElementById('appShell').classList.toggle('high-contrast');toast('Accessibility contrast updated.')});
+let officerVerified=false;
+let verifiedOfficerId='';
+let verifiedOfficerName='';
+const officerModal=document.getElementById('officerLoginModal');
+const officerIdInput=document.getElementById('officerIdInput');
+const officerIdError=document.getElementById('officerIdError');
+document.getElementById('officerSectionBtn').addEventListener('click',()=>{
+ if(!officerVerified){showLoginCard();document.getElementById('officerLoginTab').click();}
+ else page('officer');
+});
+document.getElementById('verifyOfficer').addEventListener('click',()=>{
+ const id=officerIdInput.value.trim().toUpperCase();
+ const officerName=document.getElementById('officerNameInput').value.trim();
+ if(!id){officerIdError.textContent='Please enter your Officer ID.';officerIdError.classList.add('show');officerIdInput.focus();return;}
+ if(!officerName){officerIdError.textContent='Please enter your Officer Name.';officerIdError.classList.add('show');document.getElementById('officerNameInput').focus();return;}
+ officerVerified=true;verifiedOfficerId=id;verifiedOfficerName=officerName;document.body.classList.add('officer-mode');officerIdError.classList.remove('show');officerModal.classList.remove('open');
+ document.getElementById('officerWelcome').textContent='Welcome, '+officerName+' • Officer ID: '+id+' • Review complaints, update field work and analyse your assigned workload.';
+ document.getElementById('officerSectionBtn').textContent='👷 Officer: '+officerName;
+ document.getElementById('adminNavBtn').style.display='inline-flex';
+ document.getElementById('officerProfileId').textContent=id;
+ document.getElementById('officerProfileName').textContent=officerName;
+ document.getElementById('officerProfileLocation').textContent='Kanpur Municipal Corporation';
+ document.getElementById('officerProfileAvatar').textContent=officerName.charAt(0).toUpperCase();
+ page('officer');toast('Officer login successful.');
+});
+officerIdInput.addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('verifyOfficer').click()});
+document.getElementById('officerNameInput').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('verifyOfficer').click()});
+document.querySelector('[data-page="admin"]').addEventListener('click',()=>{page('admin');});
+document.getElementById('exitOfficer').addEventListener('click',()=>{
+ officerVerified=false;verifiedOfficerId='';verifiedOfficerName='';document.body.classList.remove('officer-mode');document.getElementById('officerSectionBtn').textContent='👷 Officer Section';document.getElementById('adminNavBtn').style.display='none';document.getElementById('officerProfileId').textContent='Not verified';document.getElementById('officerProfileName').textContent='Municipal Officer';document.getElementById('officerProfileLocation').textContent='Kanpur Municipal Corporation';document.getElementById('officerProfileAvatar').textContent='O';page('home');toast('Exited Officer Section.');
+});
+// lightweight AI-style categorization demo
+const desc=document.getElementById('description');desc.addEventListener('input',()=>{const v=desc.value.toLowerCase();const cat=document.getElementById('category');if(/garbage|waste|dump|trash/.test(v))cat.value='Garbage / Sanitation';else if(/light|lamp|streetlight/.test(v))cat.value='Street Light';else if(/pothole|road|street/.test(v))cat.value='Road Damage';else if(/water|leak|pipe/.test(v))cat.value='Water Supply / Leakage';else if(/drain|sewage/.test(v))cat.value='Drainage / Sewage';});
+</script>
+<script>
+(function(){
+  const STORAGE_KEY='municipalCitizenProfileV2';
+  const COMPLAINTS_KEY='municipalComplaintsV2';
+  const EMAIL_API='/api/notifications/complaint-registered';
+
+  function getProfile(){
+    try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'null')}catch(e){return null}
+  }
+  function saveProfileData(p){localStorage.setItem(STORAGE_KEY,JSON.stringify(p))}
+  function getComplaints(){
+    try{return JSON.parse(localStorage.getItem(COMPLAINTS_KEY)||'[]')}catch(e){return []}
+  }
+  function saveComplaints(c){localStorage.setItem(COMPLAINTS_KEY,JSON.stringify(c))}
+
+  function currentAccount(){
+    const p=getProfile();
+    if(p)return p;
+    return (typeof account!=='undefined' && account)?{
+      first:account.first,last:account.last,email:account.email,password:account.password,mobile:'',address:'',photo:''
+    }:null;
+  }
+
+  function setProfileUI(p){
+    if(!p)return;
+    const full=(p.first+' '+p.last).trim()||'Citizen';
+    const initial=(p.first||'C').charAt(0).toUpperCase();
+    document.getElementById('userName').textContent=full;
+    const avatar=document.getElementById('userAvatar');
+    if(p.photo){
+      avatar.innerHTML='<img src="'+p.photo+'" alt="Profile">';
+      document.getElementById('profilePreview').src=p.photo;
+      document.getElementById('profilePreview').style.display='block';
+      document.getElementById('profileFallback').style.display='none';
+    }else{
+      avatar.textContent=initial;
+      document.getElementById('profilePreview').style.display='none';
+      document.getElementById('profileFallback').style.display='grid';
+      document.getElementById('profileFallback').textContent=initial;
+    }
+    document.getElementById('profileDisplayName').textContent=full;
+    document.getElementById('profileDisplayEmail').textContent=p.email||'';
+    document.getElementById('editFirstName').value=p.first||'';
+    document.getElementById('editLastName').value=p.last||'';
+    document.getElementById('editMobile').value=p.mobile||'';
+    document.getElementById('editEmail').value=p.email||'';
+    document.getElementById('editAddress').value=p.address||'';
+  }
+
+  function openModal(id){document.getElementById(id).classList.add('open')}
+  function closeModal(id){document.getElementById(id).classList.remove('open')}
+
+  // Persist the registration details locally so profile data survives refresh in this demo.
+  const oldRegister=window.account;
+  document.getElementById('registrationForm').addEventListener('submit',()=>{
+    setTimeout(()=>{
+      if(typeof account!=='undefined' && account){
+        const p={...account,mobile:document.getElementById('mobile').value.trim(),address:'',photo:''};
+        saveProfileData(p); setProfileUI(p);
+      }
+    },80);
+  });
+
+  // Profile
+  document.getElementById('profileBtn').onclick=()=>{
+    const p=currentAccount();
+    if(!p){toast('Please login first.');return}
+    setProfileUI(p);openModal('profileModal');
+  };
+  document.getElementById('profilePhoto').onchange=e=>{
+    const f=e.target.files[0]; if(!f)return;
+    if(f.size>3*1024*1024){toast('Please choose a photo under 3 MB.');return}
+    const reader=new FileReader();
+    reader.onload=()=>{const p=currentAccount()||{};p.photo=reader.result;saveProfileData(p);setProfileUI(p);toast('Profile photo updated.')}
+    reader.readAsDataURL(f);
+  };
+  document.getElementById('saveProfile').onclick=()=>{
+    const p=currentAccount()||{};
+    p.first=document.getElementById('editFirstName').value.trim();
+    p.last=document.getElementById('editLastName').value.trim();
+    p.mobile=document.getElementById('editMobile').value.replace(/\D/g,'').slice(0,10);
+    p.email=document.getElementById('editEmail').value.trim().toLowerCase();
+    p.address=document.getElementById('editAddress').value.trim();
+    if(!p.first||!p.last||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(p.email)){toast('Please enter a valid name and email.');return}
+    saveProfileData(p);setProfileUI(p);closeModal('profileModal');toast('Profile updated successfully.');
+  };
+
+  // Help & customer care
+  document.getElementById('helpBtnTop').onclick=()=>openModal('helpModal');
+  document.querySelectorAll('[data-help-action]').forEach(b=>b.onclick=()=>{
+    const action=b.dataset.helpAction;
+    if(action==='complaint'){closeModal('helpModal');page('new')}
+    else if(action==='track'){closeModal('helpModal');page('complaints')}
+    else if(action==='correction'){closeModal('helpModal');openModal('correctionModal')}
+    else toast('For account help, use Profile or contact Customer Care.');
+  });
+
+  // Correction requests
+  document.querySelectorAll('.edit-complaint-btn').forEach((b)=>{
+    b.onclick=()=>{
+      const row=b.closest('.complaint');
+      const id=row?.querySelector('main b')?.textContent||'Complaint';
+      document.getElementById('correctionComplaintId').textContent='Complaint: '+id;
+      document.getElementById('correctionModal').dataset.complaintId=id;
+      openModal('correctionModal');
+    };
+  });
+  document.getElementById('sendCorrection').onclick=()=>{
+    const id=document.getElementById('correctionModal').dataset.complaintId||'your complaint';
+    const type=document.getElementById('correctionType').value;
+    const body=document.getElementById('correctionText').value.trim();
+    if(!body){toast('Please enter the corrected information.');return}
+    const requests=JSON.parse(localStorage.getItem('municipalCorrectionsV2')||'[]');
+    requests.push({complaintId:id,type,body,createdAt:new Date().toISOString(),status:'Submitted'});
+    localStorage.setItem('municipalCorrectionsV2',JSON.stringify(requests));
+    document.getElementById('correctionText').value='';
+    closeModal('correctionModal');
+    toast('Correction request submitted for review.');
+  };
+
+  // Improve complaint registration: save a persistent demo record and prepare real email API call.
+  const submit=document.getElementById('submitComplaint');
+  if(submit)submit.addEventListener('click',()=>{
+    setTimeout(async()=>{
+      const id=document.getElementById('successComplaintId').textContent;
+      if(!id || id==='MCC-2026-000000')return;
+      const p=currentAccount();
+      const complaint={
+        id, email:p?.email||'', name:((p?.first||'')+' '+(p?.last||'')).trim(),
+        category:document.getElementById('category').value,
+        priority:document.getElementById('priority').value,
+        description:document.getElementById('description').value,
+        createdAt:new Date().toISOString(),status:'Submitted'
+      };
+      const all=getComplaints();all.unshift(complaint);saveComplaints(all);
+
+      // Real email delivery:
+      // Your Node/Express backend should implement POST /api/notifications/complaint-registered.
+      // The browser sends the registered email + complaint data; the server sends the email securely.
+      if(p?.email){
+        try{
+          const r=await fetch(EMAIL_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(complaint)});
+          if(r.ok) showEmailStatus('Confirmation email sent to '+p.email);
+          else showEmailStatus('Complaint registered. Email service is not configured yet.');
+        }catch(e){
+          showEmailStatus('Complaint registered. Connect the backend email service to send the confirmation to '+p.email+'.');
+        }
+      }
+    },100);
+  });
+
+  function showEmailStatus(msg){
+    const modal=document.getElementById('successModal');
+    let box=modal.querySelector('.email-status');
+    if(!box){box=document.createElement('div');box.className='email-status';modal.querySelector('.modal-card').appendChild(box)}
+    box.textContent='✉️ '+msg;
+  }
+
+  // Load saved profile on login/dashboard.
+  const saved=getProfile();
+  if(saved)setProfileUI(saved);
+
+  // Override logout slightly so profile/session data remains available for next login,
+  // but the user is returned to the login screen.
+  document.getElementById('logout').addEventListener('click',()=>{
+    setTimeout(()=>{
+      const p=getProfile();
+      if(p){document.getElementById('login-email').value=p.email||'';document.getElementById('login-password').value='';}
+    },80);
+  });
+})();
+</script>
+
+<style>
+/* Officer tools: complaint tracking, citizen replies and call support */
+.officer-tools-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+.officer-tool-card{background:#fff;border:1px solid #dce8f1;border-radius:16px;padding:18px;box-shadow:0 8px 24px rgba(30,73,104,.06)}
+.officer-tool-card h3{font-size:15px;margin-bottom:6px}.officer-tool-card p{font-size:10px;color:#7b8e9b;line-height:1.5;margin-bottom:12px}
+.officer-tool-card input,.officer-tool-card textarea{width:100%;border:1px solid #d8e5ee;border-radius:10px;padding:11px;background:#fbfdff;outline:none;font-size:12px}.officer-tool-card input:focus,.officer-tool-card textarea:focus{border-color:#63a9d8;box-shadow:0 0 0 4px rgba(11,103,178,.08)}
+.officer-tool-card textarea{min-height:92px;resize:vertical}.officer-action{width:100%;margin-top:9px;padding:10px 12px;border:0;border-radius:10px;background:#0b67b2;color:#fff;font-weight:850;cursor:pointer}.officer-action.secondary{background:#edf6fc;color:#0b67b2;border:1px solid #cfe2ef}
+.officer-result{margin-top:12px;padding:11px;border-radius:10px;background:#f7fafc;border:1px solid #e1ebf2;display:none;font-size:11px;line-height:1.5}.officer-result.show{display:block}.officer-result b{color:#17324d}.officer-result .reply-history{margin-top:9px;padding-top:9px;border-top:1px solid #e4edf3}.reply-item{padding:8px 0;border-bottom:1px solid #edf2f5}.reply-item:last-child{border-bottom:0}.reply-item small{display:block;color:#8394a1;margin-top:3px}
+.call-list{display:grid;gap:8px}.call-number{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 11px;background:#f7fbfe;border:1px solid #dce8f1;border-radius:10px}.call-number span{font-size:10px;color:#718596}.call-number b{display:block;font-size:12px;color:#17324d}.call-btn{flex:0 0 auto;text-decoration:none;background:#eaf7f0;color:#14734f;border:1px solid #cce9d9;border-radius:9px;padding:8px 10px;font-size:10px;font-weight:900}.demo-phone-note{font-size:9px!important;color:#9a7b3a!important;background:#fff8e7;border:1px solid #f1ddb0;padding:7px 8px;border-radius:8px;margin-top:9px!important}
+@media(max-width:900px){.officer-tools-grid{grid-template-columns:1fr}}
+.user-helpline-card{margin-top:16px}.user-helpline-card h3{font-size:15px;margin-bottom:5px}.user-helpline-intro{font-size:11px;color:#7b8e9b;line-height:1.5;margin-bottom:12px}
+</style>
+<script>
+(function(){
+  function officerReady(){ return typeof officerVerified!=='undefined' && officerVerified; }
+  function complaintStore(){
+    let list=[];
+    try{list=JSON.parse(localStorage.getItem('municipalComplaintsV2')||'[]')}catch(e){list=[]}
+    const demo=[
+      {id:'MCC-2026-001245',name:'Rajesh Kumar',email:'citizen@example.com',category:'Garbage / Sanitation',description:'Garbage accumulation near Ward 12 market.',status:'In Progress',priority:'High',createdAt:'2026-09-28T09:00:00'},
+      {id:'MCC-2026-001219',name:'Neha Singh',email:'citizen2@example.com',category:'Street Light',description:'Street light not working near Ward 8.',status:'Pending',priority:'Medium',createdAt:'2026-09-25T09:00:00'},
+      {id:'MCC-2026-001180',name:'Amit Verma',email:'citizen3@example.com',category:'Water Supply / Leakage',description:'Water leakage reported in Ward 4.',status:'Resolved',priority:'Low',createdAt:'2026-09-18T09:00:00'}
+    ];
+    demo.forEach(d=>{if(!list.some(x=>x.id===d.id))list.push(d)});
+    return list;
+  }
+  function save(list){localStorage.setItem('municipalComplaintsV2',JSON.stringify(list));}
+  function esc(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
+  function renderTools(){
+    const section=document.getElementById('officer'); if(!section||document.getElementById('officerToolsGrid'))return;
+    const grid=document.createElement('div');grid.id='officerToolsGrid';grid.className='officer-tools-grid';
+    grid.innerHTML=`
+      <div class="officer-tool-card">
+        <h3>🔎 Track Complaint by ID</h3>
+        <p>Enter any complaint ID to see its current status, citizen details and officer replies.</p>
+        <input id="officerTrackId" placeholder="Example: MCC-2026-001245" autocomplete="off">
+        <button class="officer-action" id="officerTrackBtn">Track Complaint</button>
+        <div class="officer-result" id="officerTrackResult"></div>
+      </div>
+      <div class="officer-tool-card">
+        <h3>💬 Reply to Citizen</h3>
+        <p>Send an officer response against a complaint. The reply is saved in this browser demo.</p>
+        <input id="officerReplyId" placeholder="Complaint ID">
+        <textarea id="officerReplyText" placeholder="Write your reply to the citizen..."></textarea>
+        <button class="officer-action" id="officerReplyBtn">Send Reply</button>
+        <div class="officer-result" id="officerReplyResult"></div>
+      </div>
+`;
+    const activity=section.querySelector('.card.section[style*="margin-top:16px"]');
+    (activity||section.querySelector('.grid2'))?.insertAdjacentElement('afterend',grid);
+    const trackBtn=document.getElementById('officerTrackBtn');
+    trackBtn.onclick=()=>{
+      if(!officerReady()){toast('Please verify your Officer ID first.');return;}
+      const id=document.getElementById('officerTrackId').value.trim().toUpperCase();
+      const result=document.getElementById('officerTrackResult');
+      if(!id){result.innerHTML='Please enter a complaint ID.';result.classList.add('show');return;}
+      const complaint=complaintStore().find(c=>String(c.id).toUpperCase()===id);
+      if(!complaint){result.innerHTML='<b>Complaint not found.</b><br>Check the complaint ID and try again.';result.classList.add('show');return;}
+      const replies=JSON.parse(localStorage.getItem('municipalOfficerRepliesV1')||'[]').filter(r=>r.complaintId===complaint.id);
+      result.innerHTML=`<b>${esc(complaint.id)}</b> · <strong>${esc(complaint.status||'Submitted')}</strong><br>${esc(complaint.category||'Civic complaint')} · Priority: ${esc(complaint.priority||'Medium')}<br><span style="color:#718596">Citizen: ${esc(complaint.name||'Citizen')} · ${esc(complaint.email||'No email')}</span><br><span style="color:#718596">${esc(complaint.description||'No description available.')}</span>${replies.length?'<div class="reply-history"><b>Officer replies</b>'+replies.map(r=>`<div class="reply-item">${esc(r.text)}<small>${esc(r.officerName)} · ${new Date(r.createdAt).toLocaleString()}</small></div>`).join('')+'</div>':''}`;
+      result.classList.add('show');
+      document.getElementById('officerReplyId').value=complaint.id;
+    };
+    document.getElementById('officerReplyBtn').onclick=()=>{
+      if(!officerReady()){toast('Please verify your Officer ID first.');return;}
+      const id=document.getElementById('officerReplyId').value.trim().toUpperCase();const text=document.getElementById('officerReplyText').value.trim();const result=document.getElementById('officerReplyResult');
+      if(!id||!text){result.innerHTML='Enter a complaint ID and write a reply.';result.classList.add('show');return;}
+      const complaint=complaintStore().find(c=>String(c.id).toUpperCase()===id);
+      if(!complaint){result.innerHTML='Complaint ID not found. Please check the ID.';result.classList.add('show');return;}
+      const replies=JSON.parse(localStorage.getItem('municipalOfficerRepliesV1')||'[]');
+      replies.push({complaintId:complaint.id,text,officerId:verifiedOfficerId,officerName:verifiedOfficerName,createdAt:new Date().toISOString()});
+      localStorage.setItem('municipalOfficerRepliesV1',JSON.stringify(replies));
+      document.getElementById('officerReplyText').value='';result.innerHTML='<b>✓ Reply sent successfully.</b><br>The response has been saved against '+esc(complaint.id)+' in this browser demo.';result.classList.add('show');toast('Reply sent to '+complaint.id);
+    };
+    document.getElementById('officerTrackId').addEventListener('keydown',e=>{if(e.key==='Enter')trackBtn.click()});
+  }
+  const oldOfficerSectionBtn=document.getElementById('officerSectionBtn');
+  if(oldOfficerSectionBtn)oldOfficerSectionBtn.addEventListener('click',()=>setTimeout(renderTools,50));
+  const oldVerify=document.getElementById('verifyOfficer');
+  if(oldVerify)oldVerify.addEventListener('click',()=>setTimeout(renderTools,80));
+  document.addEventListener('click',e=>{if(e.target.closest('[data-page="officer"]'))setTimeout(renderTools,50)});
+  setTimeout(renderTools,250);
+})();
+</script>
+</body></html>
+<style>
+.feature-tools{display:flex;gap:8px;align-items:center}.feature-tools button{border:1px solid #dce8f1;background:#fff;color:#496577;border-radius:9px;padding:7px 10px;font-size:11px;font-weight:800;cursor:pointer}.notif-wrap{position:relative}.notif-panel{display:none;position:absolute;right:0;top:42px;width:290px;background:#fff;border:1px solid #dce8f1;border-radius:14px;box-shadow:0 18px 45px rgba(30,73,104,.16);padding:10px;z-index:80}.notif-panel.open{display:block}.notif-item{padding:10px;border-radius:9px;background:#f7fafc;margin-bottom:6px;font-size:11px}.notif-item b{display:block;font-size:12px}.notif-item span{color:#758997}.badge-dot{position:absolute;right:6px;top:3px;width:7px;height:7px;background:#e25555;border-radius:50%;border:2px solid #fff}.upload-preview{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.upload-thumb{width:74px;height:58px;border-radius:9px;object-fit:cover;border:1px solid #d8e5ee;background:#f3f8fb}.assistant{position:fixed;right:20px;bottom:20px;z-index:45}.assistant-btn{width:52px;height:52px;border:0;border-radius:50%;background:#0b67b2;color:#fff;font-size:22px;box-shadow:0 12px 28px rgba(11,103,178,.25);cursor:pointer}.assistant-card{display:none;position:absolute;right:0;bottom:64px;width:300px;background:#fff;border:1px solid #dce8f1;border-radius:16px;box-shadow:0 22px 55px rgba(30,73,104,.2);overflow:hidden}.assistant-card.open{display:block}.assistant-head{padding:14px;background:#0b67b2;color:#fff;font-weight:850}.assistant-body{padding:13px}.assistant-actions{display:grid;gap:7px}.assistant-actions button{border:1px solid #dce8f1;background:#f7fbfe;padding:9px;border-radius:9px;text-align:left;font-size:11px;font-weight:750;cursor:pointer}.reopen-btn{border:1px solid #f0c9c9;background:#fff6f6;color:#b33b3b;border-radius:8px;padding:7px 9px;font-size:10px;font-weight:850;cursor:pointer}.priority-hint{font-size:10px;color:#0b67b2;margin-top:5px;font-weight:750}.duplicate-warning{display:none;margin-top:9px;padding:10px;border-radius:10px;background:#fff8e7;border:1px solid #f1ddb0;color:#8b6500;font-size:11px}.duplicate-warning.show{display:block}
+</style>
+<script>
+(function(){
+const top=document.querySelector('.topbar');if(!top)return;
+const tools=document.createElement('div');tools.className='feature-tools';
+tools.innerHTML='<button id="langToggle" title="Change language">🌐 हिंदी</button><button id="themeToggle" title="Toggle dark theme">☾ Theme</button><div class="notif-wrap"><button id="notifToggle">🔔<i class="badge-dot"></i></button><div class="notif-panel" id="notifPanel"><div class="notif-item"><b>Complaint received</b><span>Your complaint was registered successfully.</span></div><div class="notif-item"><b>Officer assigned</b><span>Your complaint is now assigned.</span></div><div class="notif-item"><b>Work started</b><span>Field action has started.</span></div></div></div>';
+top.insertBefore(tools,top.querySelector('.user-chip'));
+document.getElementById('langToggle').onclick=()=>{document.body.classList.toggle('lang-hi');document.getElementById('langToggle').textContent=document.body.classList.contains('lang-hi')?'🌐 English':'🌐 हिंदी';toast('Language changed')};
+document.getElementById('themeToggle').onclick=()=>{document.body.classList.toggle('dark');document.getElementById('themeToggle').textContent=document.body.classList.contains('dark')?'☀ Light':'☾ Theme';toast('Theme updated')};
+document.getElementById('notifToggle').onclick=e=>{e.stopPropagation();document.getElementById('notifPanel').classList.toggle('open')};
+const fi=document.querySelector('.drop input[type=file]');if(fi){const p=document.createElement('div');p.className='upload-preview';fi.parentElement.appendChild(p);fi.onchange=()=>{p.innerHTML='';[...fi.files].slice(0,6).forEach(f=>{if(f.type.startsWith('image/')){const i=document.createElement('img');i.className='upload-thumb';i.src=URL.createObjectURL(f);p.appendChild(i)}else{const s=document.createElement('div');s.className='upload-thumb';s.textContent='🎥';s.style.display='grid';s.style.placeItems='center';p.appendChild(s)}});toast(fi.files.length+' evidence file(s) ready')}}
+const d=document.getElementById('description'),pr=document.getElementById('priority');if(d&&pr){const h=document.createElement('div');h.className='priority-hint';pr.parentElement.appendChild(h);const w=document.createElement('div');w.className='duplicate-warning';w.innerHTML='<b>Possible duplicate complaint</b><br>Please check My Complaints before submitting another report.';d.parentElement.appendChild(w);d.oninput=()=>{const v=d.value.toLowerCase();let s='Medium';if(/sewage|gas leak|fallen pole|live wire|major flooding|open manhole/.test(v))s='Critical';else if(/accident|danger|deep pothole|water main|overflow|blocked road/.test(v))s='High';pr.value=s;h.textContent='Suggested priority: '+s;w.classList.toggle('show',v.length>25&&/garbage|waste|dump|street light|pothole|road|water|leak|drain/.test(v))}}
+document.querySelectorAll('#complaints .complaint').forEach(r=>{if(r.querySelector('.resolved')){const b=document.createElement('button');b.className='reopen-btn';b.textContent='Reopen';b.onclick=()=>{toast('Reopen request submitted for review.');b.textContent='Requested';b.disabled=true};r.appendChild(b)}});
+const a=document.createElement('div');a.className='assistant';a.innerHTML='<div class="assistant-card" id="assistantCard"><div class="assistant-head">🤖 Civic Help Assistant</div><div class="assistant-body"><p>Choose a service for quick guidance.</p><div class="assistant-actions"><button data-h="new">📣 Register a complaint</button><button data-h="track">🎫 Track my complaint</button><button data-h="map">📍 Complaints near me</button><button data-h="status">ℹ️ Explain complaint statuses</button></div></div></div><button class="assistant-btn" id="assistantBtn">🤖</button>';document.body.appendChild(a);
+document.getElementById('assistantBtn').onclick=()=>document.getElementById('assistantCard').classList.toggle('open');
+})();
+
+function officerComplaintView(type){
+  if(!officerVerified){officerModal.classList.add('open');return;}
+  const names={assigned:'My Assigned Complaints',all:'All Complaints',priority:'Priority Complaints'};
+  toast(names[type]+' opened for '+verifiedOfficerId);
+}
+</script>
+<style>.feature-tools{display:flex;gap:8px;align-items:center}.feature-tools button{border:1px solid #dce8f1;background:#fff;color:#496577;border-radius:9px;padding:7px 10px;font-size:11px;font-weight:800;cursor:pointer}.notif-wrap{position:relative}.notif-panel{display:none;position:absolute;right:0;top:42px;width:300px;background:#fff;border:1px solid #dce8f1;border-radius:14px;box-shadow:0 18px 45px rgba(30,73,104,.16);padding:10px;z-index:80}.notif-panel.open{display:block}.notif-item{padding:11px;border-radius:10px;background:#f7fafc;margin-bottom:6px;font-size:11px}.notif-item b{display:block;font-size:12px}.notif-item span{color:#758997}.badge-dot{position:absolute;right:6px;top:3px;width:7px;height:7px;background:#e25555;border-radius:50%;border:2px solid #fff}.upload-preview{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.upload-thumb{width:74px;height:58px;border-radius:9px;object-fit:cover;border:1px solid #d8e5ee;background:#f3f8fb}.assistant{position:fixed;right:20px;bottom:20px;z-index:45}.assistant-btn{width:52px;height:52px;border:0;border-radius:50%;background:#0b67b2;color:#fff;font-size:22px;box-shadow:0 12px 28px rgba(11,103,178,.25);cursor:pointer}.assistant-card{display:none;position:absolute;right:0;bottom:64px;width:310px;background:#fff;border:1px solid #dce8f1;border-radius:16px;box-shadow:0 22px 55px rgba(30,73,104,.2);overflow:hidden}.assistant-card.open{display:block}.assistant-head{padding:14px;background:linear-gradient(135deg,#0b67b2,#2d99d4);color:#fff;font-weight:850}.assistant-body{padding:13px}.assistant-body p{font-size:11px;color:#667d8d;line-height:1.5}.assistant-actions{display:grid;gap:7px;margin-top:10px}.assistant-actions button{border:1px solid #dce8f1;background:#f7fbfe;padding:9px;border-radius:9px;text-align:left;font-size:11px;font-weight:750;cursor:pointer}.reopen-btn{border:1px solid #f0c9c9;background:#fff6f6;color:#b33b3b;border-radius:8px;padding:7px 9px;font-size:10px;font-weight:850;cursor:pointer}.file-note{font-size:10px;color:#8293a0;margin-top:5px}.duplicate-warning{display:none;margin-top:9px;padding:10px;border-radius:10px;background:#fff8e7;border:1px solid #f1ddb0;color:#8b6500;font-size:11px}.duplicate-warning.show{display:block}.priority-hint{font-size:10px;color:#0b67b2;margin-top:5px;font-weight:750}
+/* Profile / correction / support additions */
+.avatar-photo{overflow:hidden;position:relative}.avatar-photo img{width:100%;height:100%;object-fit:cover}
+.profile-head{display:flex;align-items:center;gap:15px;padding:12px 0 20px;border-bottom:1px solid #edf2f5;margin-bottom:18px}
+.profile-head>b,.profile-head span{display:block}.profile-head span{font-size:11px;color:#8194a2;margin-top:4px}
+.profile-avatar-wrap{position:relative;width:86px;height:86px;flex:0 0 86px}.profile-avatar-img,.profile-avatar-fallback{width:86px;height:86px;border-radius:50%;object-fit:cover}.profile-avatar-fallback{display:grid;place-items:center;background:#0b67b2;color:#fff;font-size:30px;font-weight:900}
+.photo-upload{position:absolute;bottom:-5px;left:8px;background:#fff;border:1px solid #dce8f1;border-radius:999px;padding:5px 8px;font-size:9px;font-weight:850;color:#0b67b2;cursor:pointer;box-shadow:0 5px 12px rgba(30,73,104,.12)}
+.edit-complaint-btn{border:1px solid #bcd8ea;border-radius:8px;background:#f5fbff;color:#0b67b2;font-weight:850;cursor:pointer}
+.edit-complaint-btn:hover{background:#eaf5fc}
+.help-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.help-card{border:1px solid #dce8f1;background:#fafdff;border-radius:12px;padding:14px;text-align:left;cursor:pointer}.help-card:hover{border-color:#a9cbe1;transform:translateY(-1px)}.help-card b{display:block;font-size:12px;margin:7px 0 3px}.help-card span{display:block;color:#7b8e9b;font-size:10px;line-height:1.45}
+.support-contact{margin-top:16px;padding:15px;border-radius:13px;background:#f2f8fc;border:1px solid #dce8f1}.support-contact>b{font-size:13px}.support-contact p{font-size:11px;color:#708493;margin:4px 0 10px}.support-actions{display:flex;flex-wrap:wrap;gap:8px}.support-actions a{padding:9px 11px;border-radius:9px;background:#fff;border:1px solid #dce8f1;color:#0b67b2;text-decoration:none;font-size:10px;font-weight:850}.support-contact small{display:block;color:#8a9aa6;font-size:9px;margin-top:10px;line-height:1.4}
+.email-status{margin-top:10px;padding:10px 12px;border-radius:10px;background:#edf9f3;border:1px solid #c5ead8;color:#15865c;font-size:11px;font-weight:750}
+@media(max-width:760px){.nav{overflow-x:auto;max-width:100%;padding-bottom:2px}.nav button{white-space:nowrap}.feature-tools{flex-shrink:0}.user-chip{flex-shrink:0}}@media(max-width:560px){.help-grid{grid-template-columns:1fr}.profile-grid{grid-template-columns:1fr}.topbar{gap:8px;overflow-x:auto}.nav{order:3;width:100%}}
+.officer-nav-btn{border:1px solid #cce3f1!important;background:#f5fbff!important;color:#0b67b2!important}.officer-nav-btn:hover{background:#eaf5fc!important}.officer-login-card{max-width:520px}.officer-login-card .field input{height:47px}.officer-login-card .error-badge{display:none}.officer-login-card .error-badge.show{display:block}</style>

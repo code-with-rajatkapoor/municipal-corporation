@@ -1,0 +1,14 @@
+import Database from 'better-sqlite3';
+import fs from 'node:fs';
+import path from 'node:path';
+import dotenv from 'dotenv';
+dotenv.config();
+const file=process.env.DATABASE_FILE||'./data/municipal.db';
+fs.mkdirSync(path.dirname(file),{recursive:true});
+export const db=new Database(file);
+db.pragma('foreign_keys = ON');
+db.exec(`CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT NOT NULL,email TEXT UNIQUE NOT NULL,password_hash TEXT NOT NULL,role TEXT NOT NULL DEFAULT 'citizen',phone TEXT,created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE IF NOT EXISTS complaints(id INTEGER PRIMARY KEY AUTOINCREMENT,complaint_code TEXT UNIQUE NOT NULL,user_id INTEGER NOT NULL,category TEXT NOT NULL,priority TEXT NOT NULL DEFAULT 'Medium',description TEXT NOT NULL,ward TEXT,location_text TEXT,latitude REAL,longitude REAL,status TEXT NOT NULL DEFAULT 'Submitted',department TEXT,assigned_officer_id INTEGER,created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,resolved_at TEXT,FOREIGN KEY(user_id) REFERENCES users(id),FOREIGN KEY(assigned_officer_id) REFERENCES users(id));
+CREATE TABLE IF NOT EXISTS complaint_status_history(id INTEGER PRIMARY KEY AUTOINCREMENT,complaint_id INTEGER NOT NULL,status TEXT NOT NULL,note TEXT,changed_by INTEGER,created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,FOREIGN KEY(complaint_id) REFERENCES complaints(id) ON DELETE CASCADE,FOREIGN KEY(changed_by) REFERENCES users(id));
+CREATE TABLE IF NOT EXISTS evidence(id INTEGER PRIMARY KEY AUTOINCREMENT,complaint_id INTEGER NOT NULL,file_name TEXT NOT NULL,stored_name TEXT NOT NULL,mime_type TEXT NOT NULL,size INTEGER NOT NULL,created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,FOREIGN KEY(complaint_id) REFERENCES complaints(id) ON DELETE CASCADE);
+CREATE TABLE IF NOT EXISTS feedback(id INTEGER PRIMARY KEY AUTOINCREMENT,complaint_id INTEGER UNIQUE NOT NULL,user_id INTEGER NOT NULL,rating INTEGER NOT NULL,comment TEXT,reopen INTEGER NOT NULL DEFAULT 0,created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,FOREIGN KEY(complaint_id) REFERENCES complaints(id) ON DELETE CASCADE,FOREIGN KEY(user_id) REFERENCES users(id));`);
